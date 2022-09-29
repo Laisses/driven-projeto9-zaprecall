@@ -1,23 +1,30 @@
 import styled from "styled-components";
+import {images, questions} from "./assets.js";
 
 export const Questions = () => {
     return (
         <ul>
-            <QuestionClosed>
-                <p>Pergunta 1</p>
-                <img />
-            </QuestionClosed>
+            {questions.map(e => 
+                <QuestionClosed key={e.question}>
+                    <p>{e.question}</p>
+                    <img src={images.seta_play} alt="botão para abrir essa pargunta"/>
+                </QuestionClosed>    
+            )}
+            
             <QuestionOpen>
                 <p></p>
-                <img />
+                <img src ={images.seta_virar} alt="botão para"/>
+            </QuestionOpen>
+            <QuestionOpen>
+                <p></p>
             </QuestionOpen>
         </ul>
     );
-}
+};
 
 const QuestionClosed = styled.li`
     width: 300px;
-    height: 35px;
+    height: 65px;
     background-color: #FFFFFF;
     margin: 12px;
     padding: 15px;
@@ -34,6 +41,11 @@ const QuestionClosed = styled.li`
         line-height: 19px;
         color: #333333;  
     }
+    img{
+        width: 20px;
+        height: 23px;
+    }
+    
 `;
 
 const QuestionOpen = styled.li`
@@ -58,5 +70,7 @@ const QuestionOpen = styled.li`
         position: absolute;
         bottom: 10px;
         right: 10px;
+        width: 30px;
+        height: 20px;
     }
 `;
