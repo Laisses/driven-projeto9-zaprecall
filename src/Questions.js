@@ -1,23 +1,45 @@
 import styled from "styled-components";
-import {images, questions} from "./assets.js";
+import { useState } from "react";
+import { images, questions } from "./assets.js";
+
+const Question = ({ id, question, answer }) => {
+    const [status, setStatus] = useState("closed");
+
+    if (status === "closed") {
+        return (
+            <QuestionClosed>
+                <p>Pergunta {id}</p>
+                <img onClick={() => setStatus("flipped")} src={images.seta_play} alt="botão para abrir essa pargunta" />
+            </QuestionClosed>
+        );
+    } else if (status === "flipped") {
+        return (
+            <QuestionOpen>
+                <p>{question}</p>
+                <img onClick={() => setStatus("answer")} src={images.seta_virar} alt="botão para" />
+            </QuestionOpen>
+        );
+    } else if (status === "answer") {
+        return (
+            <QuestionOpen>
+                <p>{answer}</p>
+                <img onClick={() => setStatus("finished")} src={images.seta_play} alt="botão para marcar essa pargunta" />
+            </QuestionOpen>
+        );
+    } else {
+        return (
+            <QuestionClosed>
+                <p>Pergunta {id}</p>
+                <img src={images.icone_erro} alt="botão para abrir essa pargunta" />
+            </QuestionClosed>
+        );
+    }
+};
 
 export const Questions = () => {
     return (
         <ul>
-            {questions.map(e => 
-                <QuestionClosed key={e.question}>
-                    <p>{e.question}</p>
-                    <img src={images.seta_play} alt="botão para abrir essa pargunta"/>
-                </QuestionClosed>    
-            )}
-            
-            <QuestionOpen>
-                <p></p>
-                <img src ={images.seta_virar} alt="botão para"/>
-            </QuestionOpen>
-            <QuestionOpen>
-                <p></p>
-            </QuestionOpen>
+            {questions.map(e => <Question key={e.question} id={questions.indexOf(e) + 1} question={e.question} answer={e.answer}/>)}
         </ul>
     );
 };
