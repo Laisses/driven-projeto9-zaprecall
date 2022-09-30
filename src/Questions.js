@@ -1,45 +1,52 @@
-import styled from "styled-components";
 import { useState } from "react";
+import styled from "styled-components";
 import { images, questions } from "./assets.js";
 
-const Question = ({ id, question, answer }) => {
-    const [status, setStatus] = useState("closed");
+const Question = ({ questionStatus, id, question, answer }) => {
+    const [cardStatus, setCardStatus] = useState("closed");
 
-    if (status === "closed") {
-        return (
-            <QuestionClosed>
-                <p>Pergunta {id}</p>
-                <img onClick={() => setStatus("flipped")} src={images.seta_play} alt="botão para abrir essa pargunta" />
-            </QuestionClosed>
-        );
-    } else if (status === "flipped") {
-        return (
-            <QuestionOpen>
-                <p>{question}</p>
-                <img onClick={() => setStatus("answer")} src={images.seta_virar} alt="botão para" />
-            </QuestionOpen>
-        );
-    } else if (status === "answer") {
-        return (
-            <QuestionOpen>
-                <p>{answer}</p>
-                <img onClick={() => setStatus("finished")} src={images.seta_play} alt="botão para marcar essa pargunta" />
-            </QuestionOpen>
-        );
+    if (questionStatus === "unstarted") {
+        if (cardStatus === "closed") {
+            return (
+                <QuestionClosed>
+                    <p>Pergunta {id}</p>
+                    <img onClick={() => setCardStatus("flipped")} src={images.seta_play} alt="botão para ver pargunta" />
+                </QuestionClosed>
+            );
+        } else if (cardStatus === "flipped") {
+            return (
+                <QuestionOpen>
+                    <p>{question}</p>
+                    <img onClick={() => setCardStatus("answer")} src={images.seta_virar} alt="botão para ver a resposta" />
+                </QuestionOpen>
+            );
+        } else {
+            return (
+                <QuestionOpen>
+                    <p>{answer}</p>
+                    <img onClick={() => setCardStatus("finished")} src={images.seta_play} alt="não terá esse botãio" />
+                </QuestionOpen>
+            );
+        }
     } else {
         return (
-            <QuestionClosed>
+            <QuestionAnswered>
                 <p>Pergunta {id}</p>
-                <img src={images.icone_erro} alt="botão para abrir essa pargunta" />
-            </QuestionClosed>
+                <img src={images.icone_erro} alt="ícone de estado LEMBRAR DE POR O ESTADO AQUI!!!" />
+            </QuestionAnswered>
         );
     }
 };
 
-export const Questions = () => {
+export const Questions = ({ questionStatus }) => {
     return (
         <ul>
-            {questions.map(e => <Question key={e.question} id={questions.indexOf(e) + 1} question={e.question} answer={e.answer}/>)}
+            {questions.map((e, index) => <Question
+                key={e.question}
+                id={index + 1}
+                question={e.question}
+                answer={e.answer}
+                questionStatus={questionStatus} />)}
         </ul>
     );
 };
@@ -66,8 +73,7 @@ const QuestionClosed = styled.li`
     img{
         width: 20px;
         height: 23px;
-    }
-    
+    }    
 `;
 
 const QuestionOpen = styled.li`
@@ -95,4 +101,30 @@ const QuestionOpen = styled.li`
         width: 30px;
         height: 20px;
     }
+`;
+
+const QuestionAnswered = styled.li`
+    width: 300px;
+    height: 65px;
+    text-decoration: line-through;
+    background-color: #FFFFFF;
+    margin: 12px;
+    padding: 15px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    p {
+        font-family: 'Recursive';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 19px;
+        color: #333333;  
+    }
+    img{
+        width: 23px;
+        height: 23px;
+    } 
 `;
