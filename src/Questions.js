@@ -2,7 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { images } from "./assets.js";
 
-const Question = ({ questionStatus, id, question, answer }) => {
+const Question = ({ questionStatus, id, questionText, answer, marker, status, setStatus, question }) => {
+    
     const [cardStatus, setCardStatus] = useState("closed");
 
     if (questionStatus === "unstarted") {
@@ -10,13 +11,21 @@ const Question = ({ questionStatus, id, question, answer }) => {
             return (
                 <QuestionClosed>
                     <p>Pergunta {id}</p>
-                    <img onClick={() => setCardStatus("flipped")} src={images.seta_play} alt="botão para ver pargunta" />
+                    <img 
+                    onClick={() => {
+                        setStatus({
+                            ...status,
+                            initializedQuestions: [...status.initializedQuestions, question]
+                        })
+                        setCardStatus("flipped")
+                    }} 
+                    src={images.seta_play} alt="botão para ver pargunta" />
                 </QuestionClosed>
             );
         } else if (cardStatus === "flipped") {
             return (
                 <QuestionOpen>
-                    <p>{question}</p>
+                    <p>{questionText}</p>
                     <img onClick={() => setCardStatus("answer")} src={images.seta_virar} alt="botão para ver a resposta" />
                 </QuestionOpen>
             );
@@ -24,29 +33,49 @@ const Question = ({ questionStatus, id, question, answer }) => {
             return (
                 <QuestionOpen>
                     <p>{answer}</p>
-                    <img onClick={() => setCardStatus("finished")} src={images.seta_play} alt="não terá esse botãio" />
                 </QuestionOpen>
             );
         }
     } else {
-        return (
-            <QuestionAnswered>
-                <p>Pergunta {id}</p>
-                <img src={images.icone_erro} alt="ícone de estado LEMBRAR DE POR O ESTADO AQUI!!!" />
-            </QuestionAnswered>
-        );
+        if (marker === "no") {
+            return (
+                <QuestionAnswered>
+                    <p>Pergunta {id}</p>
+                    <img src={images.icone_erro} alt="ícone de não lembrei" />
+                </QuestionAnswered>
+            );
+        } else if (marker === "almost"){
+            return (
+                <QuestionAnswered>
+                    <p>Pergunta {id}</p>
+                    <img src={images.icone_quase} alt="ícone de quase lembrei" />
+                </QuestionAnswered>
+            );
+        } else {
+            return (
+                <QuestionAnswered>
+                    <p>Pergunta {id}</p>
+                    <img src={images.icone_certo} alt="ícone de acerto" />
+                </QuestionAnswered>
+            );
+        }            
     }
 };
 
-export const Questions = ({ questionStatus, questions }) => {
+export const Questions = ({ questionStatus, questions, marker, status, setStatus }) => {
     return (
         <ul>
             {questions.map((e, index) => <Question
                 key={e.question}
                 id={index + 1}
-                question={e.question}
+                questionText={e.question}
+                question={e}
                 answer={e.answer}
-                questionStatus={questionStatus} />)}
+                questionStatus={questionStatus}
+                marker={marker} 
+                status={status}
+                setStatus={setStatus}
+            />)}
         </ul>
     );
 };

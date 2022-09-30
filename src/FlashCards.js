@@ -12,21 +12,28 @@ export const FlashCards = () => {
         questionMarker: "",
         questionAnswered: false,
         finishedQuestions: 0,
+        initializedQuestions: [],
     };
-    
-    const [status, setStatus] = useState(initialDeckStatus);    
-    
+
+    const [status, setStatus] = useState(initialDeckStatus);
+    console.log(status.initializedQuestions)
     return (
         <Screen>
             <GlobalStyle />
             <Navbar />
-            <Questions questionStatus={status.questionStatus} questions={questions}/>
-            <UserAnswer 
-            answer={status.questionAnswered} 
-            setStatus={setStatus} 
-            status={status}
-            finishedQuestions={status.finishedQuestions}
-            questions={questions.length}
+            <Questions
+                questionStatus={status.questionStatus}
+                questions={questions}
+                marker={status.questionMarker}
+                setStatus={setStatus}
+                status={status}
+            />
+            <UserAnswer
+                answer={status.questionAnswered}
+                setStatus={setStatus}
+                status={status}
+                finishedQuestions={status.finishedQuestions}
+                questions={questions.length}
             />
         </Screen>
     );
