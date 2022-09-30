@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { images, questions } from "./assets.js";
+import { images } from "./assets.js";
 
 const Question = ({ questionStatus, id, question, answer }) => {
     const [cardStatus, setCardStatus] = useState("closed");
@@ -38,7 +38,7 @@ const Question = ({ questionStatus, id, question, answer }) => {
     }
 };
 
-export const Questions = ({ questionStatus }) => {
+export const Questions = ({ questionStatus, questions }) => {
     return (
         <ul>
             {questions.map((e, index) => <Question

@@ -1,14 +1,53 @@
 import styled from "styled-components";
 
-export const UserAnswer = () => {
+export const UserAnswer = ({setStatus, questions, answer, finishedQuestions}) => {
+    const chooseMarker = (e) => {
+        
+        if (e.target.value === "no") {
+            setStatus({
+                questionStatus: "finished",
+                questionMarker: "no",
+                questionAnswered: true,
+                finishedQuestions: finishedQuestions + 1,
+            })
+        } else if (e.target.value === "almost") {
+            setStatus({
+                questionStatus: "finished",
+                questionMarker: "almost",
+                questionAnswered: true,
+                finishedQuestions: finishedQuestions + 1,
+            })
+        } else {
+            setStatus({
+                questionStatus: "finished",
+                questionMarker: "zap",
+                questionAnswered: true,
+                finishedQuestions: finishedQuestions + 1,
+            })
+        }
+    };
+    
     return (
         <Footer>
             <div>
-                <ButtonNo>Não lembrei</ButtonNo>
-                <ButtonAlmost>Quase não lembrei</ButtonAlmost>
-                <ButtonZap>Zap!</ButtonZap>
+                <ButtonNo 
+                    onClick={(e) => chooseMarker(e)} 
+                    disabled={answer ? true : false}
+                    value="no">
+                        Não lembrei
+                    </ButtonNo>
+                <ButtonAlmost 
+                    onClick={(e) => chooseMarker(e)} 
+                    value="almost">
+                        Quase não lembrei
+                </ButtonAlmost>
+                <ButtonZap 
+                    onClick={(e) => chooseMarker(e)} 
+                    value="zap">
+                        Zap!
+                </ButtonZap>
             </div>
-            <span>0/4 concluídos</span>
+            <span>{finishedQuestions}/{questions} concluídos</span>
         </Footer>
     );
 };
