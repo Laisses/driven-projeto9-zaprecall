@@ -1,23 +1,14 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { images } from "./assets.js";
 
-const Question = ({ id, questionText, answer, marker, status, setStatus, question, cardStatus, setCardStatus, enabled }) => {
+const Question = ({ id, questionText, answer, cardStatus, setCardStatus, enabled }) => {
 
     if (cardStatus === "closed") {
         return (
             <QuestionClosed>
                 <p>Pergunta {id}</p>
                 <img
-                    onClick={() => {
-                        if (enabled) {
-                            setStatus({
-                                ...status,
-                                initializedQuestions: [...status.initializedQuestions, question]
-                            })
-                            setCardStatus("flipped")
-                        }
-                    }}
+                    onClick={() => enabled && setCardStatus("flipped")}
                     src={images.seta_play} alt="botão para ver pargunta" />
             </QuestionClosed>
         );
@@ -34,33 +25,31 @@ const Question = ({ id, questionText, answer, marker, status, setStatus, questio
                 <p>{answer}</p>
             </QuestionOpen>
         );
-    } else {
-        if (marker === "no") {
-            return (
-                <QuestionAnswered>
-                    <p>Pergunta {id}</p>
-                    <img src={images.icone_erro} alt="ícone de não lembrei" />
-                </QuestionAnswered>
-            );
-        } else if (marker === "almost") {
-            return (
-                <QuestionAnswered>
-                    <p>Pergunta {id}</p>
-                    <img src={images.icone_quase} alt="ícone de quase lembrei" />
-                </QuestionAnswered>
-            );
-        } else {
-            return (
-                <QuestionAnswered>
-                    <p>Pergunta {id}</p>
-                    <img src={images.icone_certo} alt="ícone de acerto" />
-                </QuestionAnswered>
-            );
-        }
+    } else if (cardStatus === "wrong") {
+        return (
+            <QuestionAnswered cardStatus={cardStatus}>
+                <p>Pergunta {id}</p>
+                <img src={images.icone_erro} alt="ícone de não lembrei" />
+            </QuestionAnswered>
+        );
+    } else if (cardStatus === "almost") {
+        return (
+            <QuestionAnswered cardStatus={cardStatus}>
+                <p>Pergunta {id}</p>
+                <img src={images.icone_quase} alt="ícone de quase lembrei" />
+            </QuestionAnswered>
+        );
+    } else if (cardStatus==="zap"){
+        return (
+            <QuestionAnswered cardStatus={cardStatus}>
+                <p>Pergunta {id}</p>
+                <img src={images.icone_certo} alt="ícone de acerto" />
+            </QuestionAnswered>
+        );
     }
 };
 
-export const Questions = ({ questions, marker, status, setStatus, cardStatus, activeQuestion }) => {
+export const Questions = ({ questions, status, setStatus, cardStatus, activeQuestion }) => {
 
     return (
         <ul>
@@ -68,11 +57,7 @@ export const Questions = ({ questions, marker, status, setStatus, cardStatus, ac
                 key={e.question}
                 id={index + 1}
                 questionText={e.question}
-                question={e}
                 answer={e.answer}
-                marker={marker}
-                status={status}
-                setStatus={setStatus}
                 cardStatus={cardStatus[index]}
                 setCardStatus={newCardStatus => {
                     setStatus({
@@ -139,7 +124,14 @@ const QuestionOpen = styled.li`
     }
 `;
 
+const STATUS_COLOR = {
+    "wrong": "#FF3030",
+    "almost": "#FF922E",
+    "zap": "#2FBE34",
+};
+
 const QuestionAnswered = styled.li`
+    color: ${({cardStatus}) => STATUS_COLOR[cardStatus] || "#333333"};   
     width: 300px;
     height: 65px;
     text-decoration: line-through;
@@ -157,7 +149,7 @@ const QuestionAnswered = styled.li`
         font-weight: 700;
         font-size: 16px;
         line-height: 19px;
-        color: #333333;  
+        color: ${({cardStatus}) => STATUS_COLOR[cardStatus] || "#333333"}; 
     }
     img{
         width: 23px;

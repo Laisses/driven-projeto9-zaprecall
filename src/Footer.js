@@ -1,50 +1,36 @@
 import styled from "styled-components";
 
-export const UserAnswer = ({setStatus, questions, answer, finishedQuestions}) => {
-    const chooseMarker = (e) => {
+export const UserAnswer = ({ setStatus, questions, finishedQuestions, status }) => {
+    const chooseMarker = (event) => {
         
-        if (e.target.value === "no") {
+        if(status.activeQuestion !== null) {
             setStatus({
-                questionStatus: "finished",
-                questionMarker: "no",
+                ...status,
                 questionAnswered: true,
                 finishedQuestions: finishedQuestions + 1,
+                activeQuestion: null,
+                cardStatus: status.cardStatus.map((element, eIndex) => eIndex === status.activeQuestion ? event.target.value : element)
             })
-        } else if (e.target.value === "almost") {
-            setStatus({
-                questionStatus: "finished",
-                questionMarker: "almost",
-                questionAnswered: true,
-                finishedQuestions: finishedQuestions + 1,
-            })
-        } else {
-            setStatus({
-                questionStatus: "finished",
-                questionMarker: "zap",
-                questionAnswered: true,
-                finishedQuestions: finishedQuestions + 1,
-            })
-        }
+        }        
     };
-    
+
     return (
         <Footer>
             <div>
-                <ButtonNo 
-                    onClick={(e) => chooseMarker(e)} 
-                    disabled={answer ? true : false}
-                    value="no">
-                        Não lembrei
-                    </ButtonNo>
-                <ButtonAlmost 
-                    onClick={(e) => chooseMarker(e)} 
+                <ButtonNo
+                    onClick={(e) => chooseMarker(e)}                    
+                    value="wrong">
+                    Não lembrei
+                </ButtonNo>
+                <ButtonAlmost
+                    onClick={(e) => chooseMarker(e)}
                     value="almost">
-                        Quase não lembrei
+                    Quase não lembrei
                 </ButtonAlmost>
-                <ButtonZap 
-                    onClick={(e) => chooseMarker(e)} 
+                <ButtonZap
+                    onClick={(e) => chooseMarker(e)}
                     value="zap">
-                        Zap!
+                    Zap!
                 </ButtonZap>
             </div>
             <span>{finishedQuestions}/{questions} concluídos</span>

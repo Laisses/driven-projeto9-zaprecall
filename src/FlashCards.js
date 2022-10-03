@@ -6,13 +6,12 @@ import { Questions } from "./Questions";
 import { UserAnswer } from "./Footer";
 import { questions } from "./assets.js";
 
+const currentQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 4)
+
 export const FlashCards = () => {
     const initialDeckStatus = {
-        questionMarker: "",
-        questionAnswered: false,
         finishedQuestions: 0,
-        initializedQuestions: [],
-        cardStatus: questions.map(_ => "closed"),
+        cardStatus: currentQuestions.map(_ => "closed"),
         activeQuestion: null,
     };
    
@@ -23,19 +22,17 @@ export const FlashCards = () => {
             <GlobalStyle />
             <Navbar />
             <Questions
-                questions={questions}
+                questions={currentQuestions}
                 cardStatus={status.cardStatus}
-                marker={status.questionMarker}
                 setStatus={setStatus}
                 status={status}
                 activeQuestion={status.activeQuestion}
             />
             <UserAnswer
-                answer={status.questionAnswered}
                 setStatus={setStatus}
                 status={status}
                 finishedQuestions={status.finishedQuestions}
-                questions={questions.length}
+                questions={currentQuestions.length}
             />
         </Screen>
     );
