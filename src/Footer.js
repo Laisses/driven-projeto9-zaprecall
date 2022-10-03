@@ -18,22 +18,25 @@ export const UserAnswer = ({ setStatus, questions, finishedQuestions, status }) 
         <Footer>
             <div>
                 <ButtonNo
+                    data-identifier="forgot-btn"
                     onClick={(e) => chooseMarker(e)}
                     value="wrong">
                     Não lembrei
                 </ButtonNo>
                 <ButtonAlmost
+                    data-identifier="almost-forgot-btn"
                     onClick={(e) => chooseMarker(e)}
                     value="almost">
                     Quase não lembrei
                 </ButtonAlmost>
                 <ButtonZap
+                    data-identifier="zap-btn"
                     onClick={(e) => chooseMarker(e)}
                     value="zap">
                     Zap!
                 </ButtonZap>
             </div>
-            <span>{finishedQuestions}/{questions} concluídos</span>
+            <span data-identifier="flashcard-counter">{finishedQuestions}/{questions} concluídos</span>
         </Footer>
     );
 };

@@ -5,46 +5,46 @@ const Question = ({ id, questionText, answer, cardStatus, setCardStatus, enabled
 
     if (cardStatus === "closed") {
         return (
-            <QuestionClosed>
-                <p>Pergunta {id}</p>
+            <QuestionClosed data-identifier="flashcard">
+                <p data-identifier="flashcard-index-item">Pergunta {id}</p>
                 <img
                     onClick={() => enabled && setCardStatus("flipped")}
-                    src={images.seta_play} alt="botão para ver pargunta" />
+                    src={images.seta_play} alt="botão para ver pargunta" data-identifier="flashcard-show-btn"/>
             </QuestionClosed>
         );
     } else if (cardStatus === "flipped") {
         return (
             <QuestionOpen>
-                <p>{questionText}</p>
-                <img onClick={() => setCardStatus("answered")} src={images.seta_virar} alt="botão para ver a resposta" />
+                <p data-identifier="flashcard-question">{questionText}</p>
+                <img onClick={() => setCardStatus("answered")} src={images.seta_virar} alt="botão para ver a resposta" data-identifier="flashcard-turn-btn"/>
             </QuestionOpen>
         );
     } else if (cardStatus === "answered") {
         console.log(cardStatus)
         return (
             <QuestionOpen>
-                <p>{answer}</p>
+                <p data-identifier="flashcard-answer">{answer}</p>
             </QuestionOpen>
         );
     } else if (cardStatus === "wrong") {
         return (
             <QuestionAnswered cardStatus={cardStatus}>
-                <p>Pergunta {id}</p>
-                <img src={images.icone_erro} alt="ícone de não lembrei" />
+                <p data-identifier="flashcard-index-item">Pergunta {id}</p>
+                <img src={images.icone_erro} alt="ícone de não lembrei" data-identifier="flashcard-status"/>
             </QuestionAnswered>
         );
     } else if (cardStatus === "almost") {
         return (
             <QuestionAnswered cardStatus={cardStatus}>
-                <p>Pergunta {id}</p>
-                <img src={images.icone_quase} alt="ícone de quase lembrei" />
+                <p data-identifier="flashcard-index-item">Pergunta {id}</p>
+                <img src={images.icone_quase} alt="ícone de quase lembrei" data-identifier="flashcard-status"/>
             </QuestionAnswered>
         );
     } else if (cardStatus==="zap"){
         return (
             <QuestionAnswered cardStatus={cardStatus}>
-                <p>Pergunta {id}</p>
-                <img src={images.icone_certo} alt="ícone de acerto" />
+                <p data-identifier="flashcard-index-item">Pergunta {id}</p>
+                <img src={images.icone_certo} alt="ícone de acerto" data-identifier="flashcard-status"/>
             </QuestionAnswered>
         );
     }
