@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const UserAnswer = ({ setStatus, questions, finishedQuestions, status }) => {
     const chooseMarker = (event) => {
         
-        if(status.activeQuestion !== null) {
+        if(status.activeQuestion !== null && status.cardStatus[status.activeQuestion] === "answered") {
+            
             setStatus({
                 ...status,
                 questionAnswered: true,
@@ -11,7 +12,7 @@ export const UserAnswer = ({ setStatus, questions, finishedQuestions, status }) 
                 activeQuestion: null,
                 cardStatus: status.cardStatus.map((element, eIndex) => eIndex === status.activeQuestion ? event.target.value : element)
             })
-        }        
+        }
     };
 
     return (

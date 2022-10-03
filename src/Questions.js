@@ -20,6 +20,7 @@ const Question = ({ id, questionText, answer, cardStatus, setCardStatus, enabled
             </QuestionOpen>
         );
     } else if (cardStatus === "answered") {
+        console.log(cardStatus)
         return (
             <QuestionOpen>
                 <p>{answer}</p>
