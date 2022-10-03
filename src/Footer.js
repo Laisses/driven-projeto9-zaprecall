@@ -2,9 +2,8 @@ import styled from "styled-components";
 
 export const UserAnswer = ({ setStatus, questions, finishedQuestions, status }) => {
     const chooseMarker = (event) => {
-        
-        if(status.activeQuestion !== null && status.cardStatus[status.activeQuestion] === "answered") {
-            
+
+        if (status.activeQuestion !== null && status.cardStatus[status.activeQuestion] === "answered") {
             setStatus({
                 ...status,
                 questionAnswered: true,
@@ -19,7 +18,7 @@ export const UserAnswer = ({ setStatus, questions, finishedQuestions, status }) 
         <Footer>
             <div>
                 <ButtonNo
-                    onClick={(e) => chooseMarker(e)}                    
+                    onClick={(e) => chooseMarker(e)}
                     value="wrong">
                     Não lembrei
                 </ButtonNo>
