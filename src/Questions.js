@@ -2,40 +2,38 @@ import { useState } from "react";
 import styled from "styled-components";
 import { images } from "./assets.js";
 
-const Question = ({ questionStatus, id, questionText, answer, marker, status, setStatus, question }) => {
-    
-    const [cardStatus, setCardStatus] = useState("closed");
+const Question = ({ id, questionText, answer, marker, status, setStatus, question, cardStatus, setCardStatus, enabled }) => {
 
-    if (questionStatus === "unstarted") {
-        if (cardStatus === "closed") {
-            return (
-                <QuestionClosed>
-                    <p>Pergunta {id}</p>
-                    <img 
+    if (cardStatus === "closed") {
+        return (
+            <QuestionClosed>
+                <p>Pergunta {id}</p>
+                <img
                     onClick={() => {
-                        setStatus({
-                            ...status,
-                            initializedQuestions: [...status.initializedQuestions, question]
-                        })
-                        setCardStatus("flipped")
-                    }} 
+                        if (enabled) {
+                            setStatus({
+                                ...status,
+                                initializedQuestions: [...status.initializedQuestions, question]
+                            })
+                            setCardStatus("flipped")
+                        }
+                    }}
                     src={images.seta_play} alt="botão para ver pargunta" />
-                </QuestionClosed>
-            );
-        } else if (cardStatus === "flipped") {
-            return (
-                <QuestionOpen>
-                    <p>{questionText}</p>
-                    <img onClick={() => setCardStatus("answer")} src={images.seta_virar} alt="botão para ver a resposta" />
-                </QuestionOpen>
-            );
-        } else {
-            return (
-                <QuestionOpen>
-                    <p>{answer}</p>
-                </QuestionOpen>
-            );
-        }
+            </QuestionClosed>
+        );
+    } else if (cardStatus === "flipped") {
+        return (
+            <QuestionOpen>
+                <p>{questionText}</p>
+                <img onClick={() => setCardStatus("answered")} src={images.seta_virar} alt="botão para ver a resposta" />
+            </QuestionOpen>
+        );
+    } else if (cardStatus === "answered") {
+        return (
+            <QuestionOpen>
+                <p>{answer}</p>
+            </QuestionOpen>
+        );
     } else {
         if (marker === "no") {
             return (
@@ -44,7 +42,7 @@ const Question = ({ questionStatus, id, questionText, answer, marker, status, se
                     <img src={images.icone_erro} alt="ícone de não lembrei" />
                 </QuestionAnswered>
             );
-        } else if (marker === "almost"){
+        } else if (marker === "almost") {
             return (
                 <QuestionAnswered>
                     <p>Pergunta {id}</p>
@@ -58,11 +56,12 @@ const Question = ({ questionStatus, id, questionText, answer, marker, status, se
                     <img src={images.icone_certo} alt="ícone de acerto" />
                 </QuestionAnswered>
             );
-        }            
+        }
     }
 };
 
-export const Questions = ({ questionStatus, questions, marker, status, setStatus }) => {
+export const Questions = ({ questions, marker, status, setStatus, cardStatus, activeQuestion }) => {
+
     return (
         <ul>
             {questions.map((e, index) => <Question
@@ -71,10 +70,18 @@ export const Questions = ({ questionStatus, questions, marker, status, setStatus
                 questionText={e.question}
                 question={e}
                 answer={e.answer}
-                questionStatus={questionStatus}
-                marker={marker} 
+                marker={marker}
                 status={status}
                 setStatus={setStatus}
+                cardStatus={cardStatus[index]}
+                setCardStatus={newCardStatus => {
+                    setStatus({
+                        ...status,
+                        cardStatus: cardStatus.map((e, eIndex) => eIndex === index ? newCardStatus : e),
+                        activeQuestion: index,
+                    })
+                }}
+                enabled={activeQuestion === null || activeQuestion === index}
             />)}
         </ul>
     );

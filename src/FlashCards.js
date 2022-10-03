@@ -8,25 +8,27 @@ import { questions } from "./assets.js";
 
 export const FlashCards = () => {
     const initialDeckStatus = {
-        questionStatus: "unstarted",//unstarted, finished
         questionMarker: "",
         questionAnswered: false,
         finishedQuestions: 0,
         initializedQuestions: [],
+        cardStatus: questions.map(_ => "closed"),
+        activeQuestion: null,
     };
-
+   
     const [status, setStatus] = useState(initialDeckStatus);
-    console.log(status.initializedQuestions)
+
     return (
         <Screen>
             <GlobalStyle />
             <Navbar />
             <Questions
-                questionStatus={status.questionStatus}
                 questions={questions}
+                cardStatus={status.cardStatus}
                 marker={status.questionMarker}
                 setStatus={setStatus}
                 status={status}
+                activeQuestion={status.activeQuestion}
             />
             <UserAnswer
                 answer={status.questionAnswered}
